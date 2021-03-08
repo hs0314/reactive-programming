@@ -1,4 +1,4 @@
-package me.heesu.reactivespring;
+package me.heesu.reactivespring.basic;
 
 public class CustomException extends RuntimeException {
     private String msg;

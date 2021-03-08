@@ -1,4 +1,4 @@
-package me.heesu.reactivespring;
+package me.heesu.reactivespring.basic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
