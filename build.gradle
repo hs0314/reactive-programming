@@ -30,6 +30,7 @@ dependencies {
 }
 
 test {
+	exclude 'me/heesu/reactivespring/basic' // 특정 test package만 ignore하고 빌드
 	useJUnitPlatform()
 	testLogging {
 		exceptionFormat = 'full'

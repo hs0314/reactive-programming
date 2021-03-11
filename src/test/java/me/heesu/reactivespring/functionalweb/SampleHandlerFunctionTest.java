@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest // functional handler는 @Componet이기 때문에 컴포넌트 @WebFluxTest어노테이션으로는 스캔이 불가
 @AutoConfigureWebTestClient // webTestClient bean 생성을 위해서 처리
+@DirtiesContext // test용, application context state를 변경하는 부분에서 선언해줘야함
 public class SampleHandlerFunctionTest {
 
     @Autowired

@@ -18,7 +18,7 @@ public class FluxMonoController {
     public Flux<Integer> getIntegerFlux(){
 
         return Flux.just(1,2,3,4)
-                .delayElements(Duration.ofSeconds(1)) // delay를 주면 브라우저에서 기본적으로 json으로 셋팅해서 디스플레이하는데에 블로킹 발생
+                //.delayElements(Duration.ofSeconds(1)) // delay를 주면 브라우저에서 기본적으로 json으로 셋팅해서 디스플레이하는데에 블로킹 발생
                 .log();
     }
 
