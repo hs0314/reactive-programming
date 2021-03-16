@@ -1,4 +1,4 @@
-package me.heesu.reactivespring.functionalweb;
+package me.heesu.reactivespring.handler;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

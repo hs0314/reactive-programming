@@ -1,5 +1,6 @@
-package me.heesu.reactivespring.functionalweb;
+package me.heesu.reactivespring.handler.router;
 
+import me.heesu.reactivespring.handler.handler.SampleHandlerFunction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

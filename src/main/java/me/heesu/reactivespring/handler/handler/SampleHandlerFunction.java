@@ -1,4 +1,4 @@
-package me.heesu.reactivespring.functionalweb;
+package me.heesu.reactivespring.handler.handler;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
