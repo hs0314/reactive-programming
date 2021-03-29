@@ -39,7 +39,7 @@ public class ItemControllerTest {
     ItemReactiveRepository itemReactiveRepository;
 
 
-    public List<Item> data(){
+    public List<Item> data() {
         return Arrays.asList(
                 new Item(null, "item1", 100.0),
                 new Item(null, "item2", 200.0),
@@ -49,7 +49,7 @@ public class ItemControllerTest {
     }
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         itemReactiveRepository.deleteAll()
                 .thenMany(Flux.fromIterable(data()))
                 .flatMap(itemReactiveRepository::save)
@@ -59,7 +59,7 @@ public class ItemControllerTest {
 
 
     @Test
-    public void getAllItems(){
+    public void getAllItems() {
         client.get().uri(ItemConstants.ITEM_END_POINT_V1)
                 .exchange() // 실제로 endpoint에 connect
                 .expectStatus().isOk()
@@ -69,23 +69,23 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void getAllItems2 (){
+    public void getAllItems2() {
         client.get().uri(ItemConstants.ITEM_END_POINT_V1)
                 .exchange() // 실제로 endpoint에 connect
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(Item.class)
                 .hasSize(4)  // setup에서 인서트된 아이템 갯수
-        .consumeWith((response) -> { // response에 접근 가능
-            List<Item> itemList = response.getResponseBody();
-            itemList.forEach((item) -> {
-                assertTrue(item.getId() != null); // insert가 완료되었으면 id가 null이 아님
-            });
-        });
+                .consumeWith((response) -> { // response에 접근 가능
+                    List<Item> itemList = response.getResponseBody();
+                    itemList.forEach((item) -> {
+                        assertTrue(item.getId() != null); // insert가 완료되었으면 id가 null이 아님
+                    });
+                });
     }
 
     @Test
-    public void getAllItems3(){
+    public void getAllItems3() {
         Flux<Item> itemFlux = client.get().uri(ItemConstants.ITEM_END_POINT_V1)
                 .exchange() // 실제로 endpoint에 connect
                 .expectStatus().isOk()
@@ -100,7 +100,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void getOneItem(){
+    public void getOneItem() {
         client.get().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "id4")
                 .exchange()
                 .expectStatus().isOk()
@@ -109,14 +109,14 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void getOneItemFail(){
+    public void getOneItemFail() {
         client.get().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "id5")
                 .exchange()
                 .expectStatus().isNotFound();
     }
 
     @Test
-    public void createItem(){
+    public void createItem() {
         Item item = new Item(null, "item5", 500.0);
 
         client.post().uri(ItemConstants.ITEM_END_POINT_V1)
@@ -131,7 +131,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void deleteItem(){
+    public void deleteItem() {
         client.delete().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "id4")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
@@ -140,7 +140,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void updateItem(){
+    public void updateItem() {
         double newPrice = 4000.0;
         Item tobeItem = new Item(null, "id4", newPrice);
 
@@ -155,7 +155,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void updateItemFail(){
+    public void updateItemFail() {
         double newPrice = 4000.0;
         Item tobeItem = new Item(null, "id4", newPrice);
 
@@ -165,6 +165,17 @@ public class ItemControllerTest {
                 .body(Mono.just(tobeItem), Item.class) // 요청body
                 .exchange()
                 .expectStatus().isNotFound();
+    }
+
+
+    // exception test
+    @Test
+    public void runTimeException(){
+        client.get().uri(ItemConstants.ITEM_END_POINT_V1 + "/runtimeException")
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .expectBody(String.class)
+                .isEqualTo("RuntimeException occured.");
     }
 
 

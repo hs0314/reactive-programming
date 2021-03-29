@@ -17,6 +17,16 @@ import static me.heesu.reactivespring.constants.ItemConstants.ITEM_END_POINT_V1;
 @Slf4j
 public class ItemController {
 
+    // 익셉션 발생 시, 해당 메서드 호출 (컨트롤러 레벨에서 관리)
+    /* ControllerExceptionHandler 를 통해서 더 글로벌한 레벨로 관리하도록 개선
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
+        log.error("Exception caught in ExceptionHandler : {} ", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(ex.getMessage());
+    }
+     */
+
     @Autowired
     ItemReactiveRepository itemReactiveRepository;
 
@@ -57,5 +67,13 @@ public class ItemController {
                 })
                 .map(i -> new ResponseEntity<>(i, HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    // exception handling
+    @GetMapping(ITEM_END_POINT_V1+"/exception")
+    public Flux<Item> runtimeException(){
+        return itemReactiveRepository.findAll()
+                .concatWith(Mono.error(new RuntimeException("RuntimeException occured.")));
     }
 }

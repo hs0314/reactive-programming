@@ -1,7 +1,8 @@
 package me.heesu.reactivespring.handler.handler;
 
-import com.mongodb.internal.connection.Server;
 import me.heesu.reactivespring.document.Item;
+import me.heesu.reactivespring.document.ItemCapped;
+import me.heesu.reactivespring.repository.ItemReactiveCappedRepository;
 import me.heesu.reactivespring.repository.ItemReactiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,13 +11,14 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
-
 @Component
 public class ItemHandler {
 
     @Autowired
     ItemReactiveRepository itemReactiveRepository;
+
+    @Autowired
+    ItemReactiveCappedRepository itemReactiveCappedRepository;
 
     static Mono<ServerResponse> NOT_FOUND = ServerResponse.notFound().build();
 
@@ -82,6 +84,18 @@ public class ItemHandler {
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(item))
                 .switchIfEmpty(NOT_FOUND);
+
+    }
+
+    public Mono<ServerResponse> itemException(ServerRequest req){
+        throw new RuntimeException("RuntimeException occured");
+    }
+
+    //item stream
+    public Mono<ServerResponse> itemsStream(ServerRequest req){
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .body(itemReactiveCappedRepository.findItemsBy(), ItemCapped.class);
 
     }
 }

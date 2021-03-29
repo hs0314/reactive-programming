@@ -6,4 +6,10 @@ public class ItemConstants {
 
     //functional web end point
     public static final String ITEM_FUNCTIONAL_END_POINT_V1 = "/v1/func/items";
+
+    //stream endpoint
+    public static final String ITEM_STREAM_END_POINT_V1 = "/v1/stream/items";
+
+    //stream functional endpoint
+    public static final String ITEM_STREAM_FUNCTIONAL_END_POINT_V1 = "/v1/func/stream/items";
 }

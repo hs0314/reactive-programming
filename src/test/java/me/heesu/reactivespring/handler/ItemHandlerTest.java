@@ -24,7 +24,7 @@ import java.util.List;
 @DirtiesContext
 @AutoConfigureWebTestClient
 @ActiveProfiles("test") //특정 환경에서만 테스트가 돌도록 처리
-public class itemHandlerTest {
+public class ItemHandlerTest {
 
     @Autowired
     WebTestClient client;
@@ -75,5 +75,14 @@ public class itemHandlerTest {
         client.get().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "id5")
                 .exchange()
                 .expectStatus().isNotFound();
+    }
+
+    @Test
+    public void runtimeException(){
+        client.get().uri("/func/exception")
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .expectBody()
+                .jsonPath("$.message", "RuntimeException occured");
     }
 }
